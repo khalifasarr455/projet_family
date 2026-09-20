@@ -1,0 +1,18 @@
+ETS SARR & FRÈRES - Site web
+
+Contenu
+- index.html : le site complet (HTML, CSS et JavaScript dans un seul fichier)
+
+Avant de mettre en ligne
+1. Ouvrez index.html dans un éditeur de texte.
+2. Cherchez le bloc "CONFIG" (vers la fin du fichier) et remplacez :
+   - phoneTel et phoneDisplay : le numéro de téléphone
+   - whatsapp : le numéro WhatsApp (format international, sans + ni espaces)
+   - address : l'adresse de l'atelier (laisser vide pour la masquer)
+3. Ajustez les listes de pièces détachées et les textes selon l'activité réelle.
+
+Mise en ligne
+Le site est statique : il fonctionne sur GitHub Pages, Netlify, Vercel ou tout hébergement web classique. Déposez simplement index.html à la racine.
+
+Aperçu en local
+Double-cliquez sur index.html pour l'ouvrir dans le navigateur (connexion internet nécessaire pour les polices).

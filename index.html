@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ETS SARR &amp; FRÈRES – Diagnostic auto, pièces détachées, assistance panne et chauffeur</title>
+<meta name="description" content="ETS SARR &amp; FRÈRES, entreprise familiale : diagnostic automobile, pièces détachées pour voitures et 2 roues, assistance en cas de panne, chauffeur. Rendez-vous 24h/24 et 7j/7.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --bg: #E9EAE5;
+    --surface: #F7F7F3;
+    --ink: #10202E;
+    --muted: #46586A;
+    --line: #C5CBC6;
+    --brand: #14304A;
+    --brand-ink: #F4F7FA;
+    --brand-muted: #A9BBCB;
+    --signal: #F5B800;
+    --signal-ink: #10202E;
+    --focus: #0B63CE;
+
+    --panel: #0A121A;
+    --panel-line: #22323F;
+    --panel-ink: #EAF0F5;
+    --panel-muted: #9DB0C1;
+    --lamp-off: #3B4B59;
+
+    --font-display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+    --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B141D;
+      --surface: #132130;
+      --ink: #EAF0F5;
+      --muted: #9DB0C1;
+      --line: #25384A;
+      --brand: #0F2436;
+      --brand-muted: #9DB0C1;
+      --focus: #7DB4FF;
+      --panel: #050A10;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B141D;
+    --surface: #132130;
+    --ink: #EAF0F5;
+    --muted: #9DB0C1;
+    --line: #25384A;
+    --brand: #0F2436;
+    --brand-muted: #9DB0C1;
+    --focus: #7DB4FF;
+    --panel: #050A10;
+  }
+
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 4.5rem); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    padding-bottom: 5.5rem;
+  }
+  img, svg { max-width: 100%; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+
+  .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+  .section { padding-block: clamp(3rem, 8vw, 6rem); }
+  .skip {
+    position: absolute; left: -999px; top: 0; background: var(--signal); color: var(--signal-ink);
+    padding: .6rem 1rem; font-weight: 700; z-index: 100;
+  }
+  .skip:focus { left: 1rem; top: 1rem; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; line-height: 1; margin: 0; letter-spacing: 0.005em; }
+  h1 { font-size: clamp(3rem, 9.5vw, 6rem); font-weight: 900; }
+  h2 { font-size: clamp(2.2rem, 5.5vw, 3.6rem); }
+  h3 { font-size: 1.75rem; }
+  p { margin: 0; }
+  .lead { font-size: 1.15rem; max-width: 52ch; }
+  .muted { color: var(--muted); }
+
+  /* Boutons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+    min-height: 3rem; padding: .7rem 1.4rem;
+    border: 2px solid transparent; border-radius: 8px;
+    font: 700 1rem/1.2 var(--font-body); text-decoration: none; cursor: pointer;
+    transition: filter .15s, background-color .15s;
+  }
+  .btn svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .btn-signal { background: var(--signal); color: var(--signal-ink); }
+  .btn-signal:hover { filter: brightness(1.07); }
+  .btn-ghost { border-color: currentColor; color: var(--ink); background: transparent; }
+  .btn-ghost:hover { background: rgba(127,127,127,.14); }
+  .btn-wa { background: #25D366; color: #08210F; }
+  .btn-wa:hover { filter: brightness(1.05); }
+  .on-dark .btn-ghost { color: var(--brand-ink); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+  /* En-tête */
+  .topbar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+    background: var(--brand); color: var(--brand-ink);
+    border-bottom: 3px solid var(--signal);
+  }
+  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; }
+  .brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; }
+  .brand-mark {
+    display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 8px;
+    background: var(--signal); color: var(--signal-ink);
+    font: 900 1.25rem/1 var(--font-display); letter-spacing: .02em;
+  }
+  .brand-name { font: 800 1.35rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; }
+  .brand-sub { display: block; font: 500 .72rem/1.2 var(--font-body); color: var(--brand-muted); letter-spacing: 0; text-transform: none; margin-top: .2rem; }
+  .nav { display: none; gap: 1.6rem; }
+  .nav a { text-decoration: none; font-weight: 600; font-size: .95rem; padding: .4rem 0; border-bottom: 2px solid transparent; }
+  .nav a:hover { border-bottom-color: var(--signal); }
+  .topbar .btn { min-height: 2.6rem; padding: .45rem 1rem; font-size: .95rem; }
+  @media (min-width: 900px) { .nav { display: flex; } }
+  @media (max-width: 520px) { .topbar .btn .call-text { display: none; } .topbar .btn { padding: .45rem .8rem; } .brand-sub { display: none; } }
+
+  /* Hero */
+  .hero { padding-top: clamp(2.5rem, 7vw, 5rem); padding-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .hero-grid { display: grid; gap: 1.75rem; align-items: end; }
+  .hero-side { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) {
+    .hero-grid { grid-template-columns: 7fr 5fr; gap: 3rem; }
+  }
+
+  /* Tableau de bord */
+  .cluster {
+    background: var(--panel); color: var(--panel-ink);
+    border-radius: 18px; padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--panel-line);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.04), inset 0 -18px 40px rgba(0,0,0,.35);
+  }
+  .cluster-title { font-size: .95rem; color: var(--panel-muted); margin-bottom: 1.25rem; }
+  .lamps { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.25rem, 1fr)); gap: 1rem .5rem; }
+  .lamp {
+    --lit: #FFB400; --lit-glow: rgba(255,180,0,.55);
+    display: flex; flex-direction: column; align-items: center; gap: .55rem;
+    background: none; border: 0; padding: .25rem; cursor: pointer; color: var(--panel-muted);
+    font: 600 .82rem/1.2 var(--font-body);
+  }
+  .lamp[data-tone="red"] { --lit: #FF4A38; --lit-glow: rgba(255,74,56,.55); }
+  .lamp-glass {
+    display: grid; place-items: center; width: 4rem; height: 4rem; border-radius: 50%;
+    border: 2px solid var(--lamp-off); color: var(--lamp-off);
+    transition: color .25s, border-color .25s, box-shadow .25s, background-color .25s;
+  }
+  .lamp-glass svg { width: 1.85rem; height: 1.85rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .lamp:hover .lamp-label { color: var(--panel-ink); }
+  .lamp[aria-selected="true"] .lamp-label { color: var(--panel-ink); }
+  .lamp.is-lit .lamp-glass,
+  .lamp[aria-selected="true"] .lamp-glass {
+    color: var(--lit); border-color: var(--lit);
+    background-color: rgba(255,255,255,.04);
+    box-shadow: 0 0 22px var(--lit-glow), inset 0 0 14px var(--lit-glow);
+  }
+  .lamp.is-lit .lamp-glass svg,
+  .lamp[aria-selected="true"] .lamp-glass svg { filter: drop-shadow(0 0 4px var(--lit-glow)); }
+  .cluster.boot .lamp[aria-selected="true"]:not(.is-lit) .lamp-glass {
+    color: var(--lamp-off); border-color: var(--lamp-off); box-shadow: none; background-color: transparent;
+  }
+  .cluster.boot .lamp[aria-selected="true"]:not(.is-lit) .lamp-glass svg { filter: none; }
+
+  .detail { --lit: #FFB400; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--panel-line); min-height: 11rem; }
+  .detail h3 { color: var(--lit); font-size: clamp(1.9rem, 4vw, 2.5rem); margin-bottom: .6rem; }
+  .detail p { color: var(--panel-ink); max-width: 58ch; margin-bottom: 1.25rem; }
+
+  /* Pièces */
+  .section-head { display: grid; gap: 1rem; margin-bottom: 2.25rem; max-width: 46rem; }
+  .cols { display: grid; gap: 2rem; }
+  @media (min-width: 760px) {
+    .cols { grid-template-columns: 1fr 1fr; gap: 0; }
+    .col + .col { border-left: 1px solid var(--line); padding-left: 2.5rem; }
+    .col:first-child { padding-right: 2.5rem; }
+  }
+  .col h3 { margin-bottom: .75rem; }
+  .parts { list-style: none; margin: 0; padding: 0; }
+  .parts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .1rem 1rem; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  .parts li:first-child { border-top: 1px solid var(--line); }
+  .parts strong { font-weight: 700; }
+  .parts span { color: var(--muted); font-size: .95rem; }
+  .cta-line { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+
+  /* Chauffeur */
+  .band { background: var(--brand); color: var(--brand-ink); }
+  .band .muted { color: var(--brand-muted); }
+  .band-grid { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 900px) { .band-grid { grid-template-columns: 6fr 5fr; gap: 4rem; } }
+  .band-text { display: grid; gap: 1.25rem; }
+  .trips { list-style: none; margin: 0; padding: 0; }
+  .trips li { padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,.18); }
+  .trips li:first-child { border-top: 1px solid rgba(255,255,255,.18); }
+  .trips strong { display: block; font-weight: 700; }
+  .trips span { color: var(--brand-muted); font-size: .95rem; }
+
+  /* Rendez-vous */
+  .rdv-grid { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 900px) { .rdv-grid { grid-template-columns: 7fr 4fr; gap: 4rem; } }
+  .form { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: clamp(1.25rem, 3vw, 2rem); display: grid; gap: 1.1rem; }
+  .row2 { display: grid; gap: 1.1rem; }
+  @media (min-width: 620px) { .row2 { grid-template-columns: 1fr 1fr; } }
+  .field { display: grid; gap: .35rem; }
+  .field label { font-weight: 600; font-size: .95rem; }
+  .field input, .field select, .field textarea {
+    width: 100%; font: 400 1rem/1.4 var(--font-body); color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .75rem .85rem;
+    min-height: 3rem;
+  }
+  .field textarea { min-height: 6rem; resize: vertical; }
+  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+  .hint { font-size: .9rem; color: var(--muted); }
+  .result { margin-top: 1.5rem; border: 2px solid var(--signal); border-radius: 14px; padding: 1.25rem; background: var(--surface); display: grid; gap: 1rem; }
+  .result[hidden] { display: none; }
+  .result h3 { font-size: 1.6rem; }
+  .result pre { margin: 0; white-space: pre-wrap; font: 400 .95rem/1.5 var(--font-body); background: var(--bg); border-radius: 8px; padding: .85rem; color: var(--muted); }
+
+  .contact { display: grid; gap: 1.5rem; }
+  .contact h3 { margin-bottom: .25rem; }
+  .contact-item { display: grid; gap: .15rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+  .contact-item[hidden] { display: none; }
+  .contact-item strong { font-size: .95rem; color: var(--muted); font-weight: 600; }
+  .phone-big { font: 800 2rem/1.1 var(--font-display); text-decoration: none; letter-spacing: .02em; }
+  .phone-big:hover { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 3px; }
+
+  /* Pied de page */
+  .foot { background: var(--brand); color: var(--brand-ink); padding-block: 2.5rem; }
+  .foot-in { display: grid; gap: 1rem; }
+  .foot .muted { color: var(--brand-muted); font-size: .95rem; max-width: 50ch; }
+
+  /* Barre d'appel mobile */
+  .callbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    display: flex; gap: .6rem; padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom, 0px));
+    background: var(--brand); border-top: 3px solid var(--signal);
+  }
+  .callbar .btn { flex: 1; }
+  @media (min-width: 721px) { .callbar { display: none; } body { padding-bottom: 0; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top" aria-label="ETS SARR &amp; FRÈRES, accueil">
+      <span class="brand-mark" aria-hidden="true">S&amp;F</span>
+      <span class="brand-name">ETS Sarr &amp; Frères<span class="brand-sub">Entreprise familiale</span></span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#services">Services</a>
+      <a href="#pieces">Pièces détachées</a>
+      <a href="#chauffeur">Chauffeur</a>
+      <a href="#rendez-vous">Rendez-vous</a>
+    </nav>
+    <a class="btn btn-signal" data-call aria-label="Appeler ETS SARR &amp; FRÈRES" href="#rendez-vous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="call-text">Appeler</span>
+    </a>
+  </div>
+</header>
+
+<main id="contenu">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-grid">
+        <h1>Véhicule en panne&nbsp;? Appelez-nous.</h1>
+        <div class="hero-side">
+          <p class="lead">Diagnostic, pièces détachées, assistance et chauffeur : ETS SARR &amp; FRÈRES est une entreprise familiale au service des automobilistes et des motards.</p>
+          <div class="btn-row">
+            <a class="btn btn-signal" data-call href="#rendez-vous">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Appeler maintenant
+            </a>
+            <a class="btn btn-ghost" data-wa="Bonjour, j'ai besoin d'aide pour mon véhicule." href="#rendez-vous" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" style="padding-bottom: clamp(3rem, 8vw, 6rem);" aria-label="Nos services">
+    <div class="wrap">
+      <div class="cluster" id="cluster">
+        <p class="cluster-title" id="cluster-title">Touchez un voyant pour découvrir le service.</p>
+        <div class="lamps" role="tablist" aria-labelledby="cluster-title" id="lamps"></div>
+        <div class="detail" id="detail" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pieces" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pièces détachées pour voitures et 2 roues</h2>
+        <p class="lead">Voici les familles de pièces les plus demandées. La vôtre n’y figure pas&nbsp;? Donnez-nous la marque, le modèle et l’année : nous vous confirmons la disponibilité.</p>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <h3>Pour les voitures</h3>
+          <ul class="parts">
+            <li><strong>Freinage</strong><span>plaquettes, disques, liquide</span></li>
+            <li><strong>Filtres</strong><span>huile, air, habitacle, carburant</span></li>
+            <li><strong>Batterie et allumage</strong><span>batteries, bougies</span></li>
+            <li><strong>Courroies</strong><span>accessoires, distribution</span></li>
+            <li><strong>Suspension</strong><span>amortisseurs, rotules</span></li>
+            <li><strong>Huiles et liquides</strong><span>moteur, refroidissement</span></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Pour les 2 roues</h3>
+          <ul class="parts">
+            <li><strong>Transmission</strong><span>chaînes, pignons, couronnes</span></li>
+            <li><strong>Freinage</strong><span>plaquettes, mâchoires</span></li>
+            <li><strong>Pneus</strong><span>pneus, chambres à air</span></li>
+            <li><strong>Batteries</strong><span>batteries, chargeurs</span></li>
+            <li><strong>Allumage et filtres</strong><span>bougies, filtres à air</span></li>
+            <li><strong>Éclairage</strong><span>phares, clignotants, rétroviseurs</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="cta-line">
+        <a class="btn btn-signal" href="#rendez-vous" data-pick="Pièces détachées">Demander une pièce</a>
+        <span class="hint">Réponse par WhatsApp ou par téléphone.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band on-dark" id="chauffeur">
+    <div class="wrap band-grid">
+      <div class="band-text">
+        <h2>Besoin d’un chauffeur pour vos déplacements&nbsp;?</h2>
+        <p class="lead">Dites-nous où vous allez et à quelle heure. Nous vous répondons avec un devis, sans engagement.</p>
+        <div class="btn-row">
+          <a class="btn btn-signal" href="#rendez-vous" data-pick="Chauffeur pour mes déplacements">Demander un chauffeur</a>
+          <a class="btn btn-ghost" data-call href="#rendez-vous">Appeler</a>
+        </div>
+      </div>
+      <ul class="trips">
+        <li><strong>Trajets en ville</strong><span>Travail, courses, démarches, rendez-vous du quotidien.</span></li>
+        <li><strong>Rendez-vous professionnels</strong><span>Arriver à l’heure et sans stress de conduite.</span></li>
+        <li><strong>Aéroport et longues distances</strong><span>Départs tôt, arrivées tardives, trajets hors de la ville.</span></li>
+        <li><strong>Sorties et événements</strong><span>Mariages, baptêmes, fêtes de famille.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="rendez-vous">
+    <div class="wrap rdv-grid">
+      <div>
+        <div class="section-head">
+          <h2>Prendre rendez-vous, à toute heure</h2>
+          <p class="lead">Envoyez votre demande 24h/24 et 7j/7, y compris la nuit et le week-end. Choisissez un jour et une heure : nous confirmons avec vous.</p>
+        </div>
+
+        <form class="form" id="rdv-form" novalidate>
+          <div class="row2">
+            <div class="field">
+              <label for="nom">Votre nom</label>
+              <input id="nom" name="nom" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="tel">Votre téléphone</label>
+              <input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="service">Service souhaité</label>
+            <select id="service" name="service" required>
+              <option value="Diagnostic automobile">Diagnostic automobile</option>
+              <option value="Pièces détachées">Pièces détachées</option>
+              <option value="Assistance véhicule en panne">Assistance véhicule en panne</option>
+              <option value="Chauffeur pour mes déplacements">Chauffeur pour mes déplacements</option>
+              <option value="Autre demande">Autre demande</option>
+            </select>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="type">Type de véhicule</label>
+              <select id="type" name="type">
+                <option value="Voiture">Voiture</option>
+                <option value="Moto ou scooter">Moto ou scooter</option>
+                <option value="Autre véhicule">Autre véhicule</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="modele">Marque, modèle et année</label>
+              <input id="modele" name="modele" type="text" placeholder="Ex. Toyota Corolla 2012">
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="date">Jour souhaité</label>
+              <input id="date" name="date" type="date">
+            </div>
+            <div class="field">
+              <label for="heure">Heure souhaitée</label>
+              <input id="heure" name="heure" type="time">
+            </div>
+          </div>
+          <div class="field">
+            <label for="message">Décrivez votre besoin</label>
+            <textarea id="message" name="message" placeholder="Voyant allumé, bruit au freinage, pièce recherchée, trajet à effectuer…"></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-signal" type="submit">Envoyer ma demande</button>
+          </div>
+          <p class="hint">Votre demande est préparée puis envoyée par WhatsApp. Aucune donnée n’est enregistrée sur ce site.</p>
+        </form>
+
+        <div class="result" id="result" role="status" hidden>
+          <h3>Votre demande est prête</h3>
+          <p>Touchez le bouton pour l’envoyer sur WhatsApp. Si WhatsApp ne s’est pas ouvert, c’est ici.</p>
+          <pre id="result-text"></pre>
+          <div class="btn-row">
+            <a class="btn btn-wa" id="result-link" href="#rendez-vous" target="_blank" rel="noopener">Envoyer sur WhatsApp</a>
+            <a class="btn btn-ghost" data-call href="#rendez-vous">Appeler à la place</a>
+          </div>
+        </div>
+      </div>
+
+      <aside class="contact" aria-label="Nous joindre">
+        <h3>Nous joindre directement</h3>
+        <div class="contact-item">
+          <strong>Téléphone</strong>
+          <a class="phone-big" data-call data-phone href="#rendez-vous"></a>
+        </div>
+        <div class="contact-item">
+          <strong>WhatsApp</strong>
+          <a data-wa="Bonjour, je vous écris depuis votre site." href="#rendez-vous" target="_blank" rel="noopener">Ouvrir une conversation</a>
+        </div>
+        <div class="contact-item" id="address-row" hidden>
+          <strong>Adresse</strong>
+          <span id="address-text"></span>
+        </div>
+        <div class="contact-item">
+          <strong>Rendez-vous</strong>
+          <span>24h/24, 7j/7</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="foot on-dark">
+  <div class="wrap foot-in">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">S&amp;F</span>
+      <span class="brand-name">ETS Sarr &amp; Frères</span>
+    </div>
+    <p class="muted">Entreprise familiale. Un seul contact pour tout ce qui touche à votre véhicule : diagnostic, pièces détachées, assistance en cas de panne et chauffeur.</p>
+    <p class="muted">© 2026 ETS SARR &amp; FRÈRES. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<div class="callbar" aria-label="Contact rapide">
+  <a class="btn btn-signal" data-call href="#rendez-vous">Appeler</a>
+  <a class="btn btn-wa" data-wa="Bonjour, j'ai besoin d'aide pour mon véhicule." href="#rendez-vous" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<script>
+  /* ====== À MODIFIER : coordonnées de l'entreprise ====== */
+  const CONFIG = {
+    phoneTel: "+221770000000",        // numéro au format international, sans espaces
+    phoneDisplay: "+221 77 000 00 00", // numéro tel qu'affiché sur le site
+    whatsapp: "221770000000",          // numéro WhatsApp, sans + ni espaces
+    address: ""                        // ex. "Rue 10, Médina, Dakar" (laisser vide pour masquer)
+  };
+  /* ====================================================== */
+
+  const enc = encodeURIComponent;
+  const waLink = (msg) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + enc(msg);
+
+  document.querySelectorAll("[data-call]").forEach(a => { a.href = "tel:" + CONFIG.phoneTel; });
+  document.querySelectorAll("[data-wa]").forEach(a => {
+    a.href = waLink(a.dataset.wa || "Bonjour, je vous écris depuis votre site.");
+  });
+  document.querySelectorAll("[data-phone]").forEach(el => { el.textContent = CONFIG.phoneDisplay; });
+  if (CONFIG.address) {
+    document.getElementById("address-text").textContent = CONFIG.address;
+    document.getElementById("address-row").hidden = false;
+  }
+
+  /* ====== Tableau de bord des services ====== */
+  const ICONS = {
+    engine: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10H8L9 8H14V10H16.5L18.5 12H21V17H18.5L16.5 19H8.5L5 15.5Z"/><path d="M11 8V6M9.5 6H12.5M2.5 11.5V14"/></svg>',
+    cog: (function () {
+      let teeth = "";
+      for (let a = 0; a < 360; a += 45) {
+        teeth += '<line x1="12" y1="2.8" x2="12" y2="6" stroke-width="3.2" stroke-linecap="butt" transform="rotate(' + a + ' 12 12)"/>';
+      }
+      return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.3"/>' + teeth + '</svg>';
+    })(),
+    hazard: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5L22 20.5H2Z"/><path d="M12 10V15M12 17.6V17.61"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7V12L15.5 14"/></svg>',
+    wheel: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.2"/><path d="M3.2 10.5L9.8 11.3M20.8 10.5L14.2 11.3M12 14.2V21"/></svg>'
+  };
+
+  const SERVICES = [
+    { key: "diagnostic", label: "Diagnostic", icon: "engine", tone: "amber",
+      title: "Diagnostic automobile",
+      text: "Voyant allumé, perte de puissance, bruit inhabituel : nous cherchons la cause et vous expliquons ce qu’il faut réparer avant toute intervention.",
+      cta: "Réserver un diagnostic", action: "form", service: "Diagnostic automobile" },
+    { key: "pieces", label: "Pièces", icon: "cog", tone: "amber",
+      title: "Pièces détachées",
+      text: "Pièces pour voitures et pour 2 roues. Donnez-nous la marque, le modèle et l’année, nous vérifions ce qui est disponible.",
+      cta: "Demander une pièce", action: "form", service: "Pièces détachées" },
+    { key: "panne", label: "Panne", icon: "hazard", tone: "red",
+      title: "Assistance en cas de panne",
+      text: "Voiture, moto, scooter ou autre véhicule à l’arrêt : appelez-nous, dites où vous êtes et ce qui se passe.",
+      cta: "Appeler maintenant", action: "call" },
+    { key: "rdv", label: "Rendez-vous", icon: "clock", tone: "amber",
+      title: "Rendez-vous 24h/24, 7j/7",
+      text: "Choisissez le jour et l’heure qui vous arrangent, y compris la nuit et le week-end. Envoyez votre demande à toute heure, nous confirmons avec vous.",
+      cta: "Prendre rendez-vous", action: "form", service: "" },
+    { key: "chauffeur", label: "Chauffeur", icon: "wheel", tone: "amber",
+      title: "Chauffeur pour vos déplacements",
+      text: "Un chauffeur pour vos trajets du quotidien, vos rendez-vous ou vos sorties. Indiquez le trajet et l’horaire, nous vous envoyons un devis.",
+      cta: "Demander un chauffeur", action: "form", service: "Chauffeur pour mes déplacements" }
+  ];
+
+  const lampsEl = document.getElementById("lamps");
+  const detailEl = document.getElementById("detail");
+  const clusterEl = document.getElementById("cluster");
+  const serviceSelect = document.getElementById("service");
+  let current = 0;
+
+  SERVICES.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "lamp";
+    b.id = "lamp-" + s.key;
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-controls", "detail");
+    b.setAttribute("aria-selected", "false");
+    b.tabIndex = -1;
+    b.dataset.tone = s.tone;
+    b.innerHTML = '<span class="lamp-glass">' + ICONS[s.icon] + '</span><span class="lamp-label">' + s.label + '</span>';
+    b.addEventListener("click", () => select(i));
+    lampsEl.appendChild(b);
+  });
+  const lamps = Array.from(lampsEl.children);
+
+  function select(i, focus) {
+    current = i;
+    const s = SERVICES[i];
+    lamps.forEach((l, k) => {
+      l.setAttribute("aria-selected", k === i ? "true" : "false");
+      l.tabIndex = k === i ? 0 : -1;
+    });
+    detailEl.setAttribute("aria-labelledby", "lamp-" + s.key);
+    detailEl.style.setProperty("--lit", s.tone === "red" ? "#FF6A58" : "#FFB400");
+    detailEl.innerHTML = "";
+    const h = document.createElement("h3"); h.textContent = s.title;
+    const p = document.createElement("p"); p.textContent = s.text;
+    const a = document.createElement("a");
+    a.className = "btn btn-signal";
+    a.textContent = s.cta;
+    if (s.action === "call") {
+      a.href = "tel:" + CONFIG.phoneTel;
+    } else {
+      a.href = "#rendez-vous";
+      a.addEventListener("click", () => { if (s.service) serviceSelect.value = s.service; });
+    }
+    detailEl.append(h, p, a);
+    if (focus) lamps[i].focus();
+  }
+
+  lampsEl.addEventListener("keydown", (e) => {
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+    if (e.key in keys) {
+      e.preventDefault();
+      select((current + keys[e.key] + SERVICES.length) % SERVICES.length, true);
+    } else if (e.key === "Home") { e.preventDefault(); select(0, true); }
+    else if (e.key === "End") { e.preventDefault(); select(SERVICES.length - 1, true); }
+  });
+
+  select(0);
+
+  /* Auto-test au chargement, comme sur un vrai tableau de bord */
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    clusterEl.classList.add("boot");
+    lamps.forEach((l, i) => setTimeout(() => l.classList.add("is-lit"), 350 + i * 160));
+    setTimeout(() => {
+      lamps.forEach(l => l.classList.remove("is-lit"));
+      clusterEl.classList.remove("boot");
+    }, 350 + lamps.length * 160 + 900);
+  }
+
+  /* Boutons « demander… » qui présélectionnent un service */
+  document.querySelectorAll("[data-pick]").forEach(a => {
+    a.addEventListener("click", () => { serviceSelect.value = a.dataset.pick; });
+  });
+
+  /* ====== Formulaire de rendez-vous ====== */
+  const form = document.getElementById("rdv-form");
+  const result = document.getElementById("result");
+  const resultText = document.getElementById("result-text");
+  const resultLink = document.getElementById("result-link");
+
+  const dateInput = document.getElementById("date");
+  (function () {
+    const d = new Date();
+    const iso = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    dateInput.min = iso;
+  })();
+
+  function frDate(iso) {
+    if (!iso) return "";
+    const [y, m, d] = iso.split("-");
+    return d + "/" + m + "/" + y;
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const f = new FormData(form);
+    const when = [frDate(f.get("date")), f.get("heure")].filter(Boolean).join(" à ");
+    const lines = [
+      "Bonjour ETS SARR & FRÈRES,",
+      "Je souhaite : " + f.get("service") + ".",
+      "Véhicule : " + [f.get("type"), (f.get("modele") || "").trim()].filter(Boolean).join(", "),
+      when ? "Jour et heure souhaités : " + when : "",
+      (f.get("message") || "").trim() ? "Détails : " + f.get("message").trim() : "",
+      "Nom : " + f.get("nom").trim(),
+      "Téléphone : " + f.get("tel").trim()
+    ].filter(Boolean);
+    const msg = lines.join("\n");
+    const url = waLink(msg);
+    resultText.textContent = msg;
+    resultLink.href = url;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: "smooth", block: "center" });
+    try { window.open(url, "_blank", "noopener"); } catch (err) { /* le bouton ci-dessous prend le relais */ }
+  });
+</script>
+</body>
+</html>
