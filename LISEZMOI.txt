@@ -1,4 +1,4 @@
-ETS SARR & FRÈRES - Site web
+SARR DIESEL SERVICES - Site web
 
 Contenu
 - index.html : le site complet (HTML, CSS et JavaScript dans un seul fichier)
